@@ -15,13 +15,18 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
 
 [dependencies]
-scopeguard = { version = "1.1.0", default-features = false }
-owning_ref = { version = "0.4.1", optional = true }
+scopeguard = { git = "https://github.com/sunfishcode/scopeguard", branch = "rustc-dep-of-std", default-features = false }
+owning_ref = { git = "https://github.com/sunfishcode/owning-ref-rs", branch = "rustc-dep-of-std", optional = true, default-features = false }
 
 # Optional dependency for supporting serde.  Optional crates automatically
 # create a feature with the same name as the crate, so if you need serde
 # support, just pass "--features serde" when building this crate.
 serde = { version = "1.0.126", default-features = false, optional = true }
+
+# Special dependencies used in rustc-dep-of-std mode.
+core = { version = "1.0.0", optional = true, package = "rustc-std-workspace-core" }
+alloc = { version = "1.0.0", optional = true, package = "rustc-std-workspace-alloc" }
+compiler_builtins = { version = '0.1.49', optional = true }
 
 [build-dependencies]
 autocfg = "1.1.0"
@@ -31,3 +36,4 @@ default = ["atomic_usize"]
 nightly = []
 arc_lock = []
 atomic_usize = []
+rustc-dep-of-std = ["core", "alloc", "compiler_builtins", "scopeguard/rustc-dep-of-std", "owning_ref/rustc-dep-of-std"]
